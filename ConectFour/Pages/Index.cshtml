@@ -1,0 +1,125 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Connect Four";
+}
+
+<div class="center-container">
+    <div class="cell @((Model.Game.turn) == 1 ? "player1" : "player2")">
+        Current Turn: Player @(Model.Game.turn)
+    </div>
+</div>
+
+
+<table class="connect-four-board">
+    @foreach(var row in Model.Board.board)
+    {
+        <tr>
+            @foreach(var piece in row)
+            {
+                <td class="cell @(piece == 1 ? "player1" : piece == 2 ? "player2" : "empty")">
+                    
+                </td>
+            }
+        </tr>
+    }
+    <tr class="column-numbers">
+        @for (int i = 0; i < Model.Board.board[0].Count; i++)
+        {
+            <td>
+                <form method="post">
+                    <input type="hidden" name="column" value="@i"/>
+                    <button type="submit" asp-page-handler="Move" class="column-btn">
+                        @(i + 1)
+                    </button>
+                </form>
+            </td>
+        }
+    </tr>
+</table>
+
+<div class="center-container">
+    <form method="post">
+        <button class="gamebutton" type="submit" asp-page-handler="Reset">Restart Game</button>
+    </form>
+</div>
+<div class="center-container">
+    <div class="alert">
+        @(Model.Message)
+    </div>
+</div>
+
+<style>
+
+    .alert {
+        color: Green;
+        font-weight: bold;
+    }
+
+    .connect-four-board .column-numbers td {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .gamebutton {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .connect-four-board {
+        border-collapse: collapse;
+        margin: 20px auto;
+        background-color: antiquewhite;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .connect-four-board tr {
+        height: 50px;
+    }
+
+    .connect-four-board td {
+        width: 50px;
+        height: 50px;
+        border: 6px solid blue;
+        border-radius: 50%; 
+        text-align: center;
+        vertical-align: middle;
+        position: relative;
+    }
+
+    .empty {
+        background-color: antiquewhite;
+    }
+
+    .player1 {
+        z-index: 1;
+        background-color: red;
+    }
+
+    .player2 {
+        z-index: 1;
+        background-color: yellow;
+    }
+    .column-numbers td {
+        color: black;
+        padding: 5px;
+    }
+
+    .column-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 16px;
+        font-weight: bold;
+        background-color: antiquewhite;
+        color: black;
+        border: 2px solid blue;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .column-btn:hover {
+        background-color: yellow;
+        color: #004080;
+    }
+</style>
